@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
 // app.use(limiter)
 
 // Prevent http param pollution
-app.use(hpp())
+// app.use(hpp())
 
 require('./routes')(app)
 
