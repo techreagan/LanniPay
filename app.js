@@ -2,12 +2,12 @@ const express = require('express')
 const dotenv = require('dotenv')
 const colors = require('colors')
 const morgan = require('morgan')
-const mongoSanitize = require('express-mongo-sanitize')
-const helmet = require('helmet')
-const xss = require('xss-clean')
-const rateLimit = require('express-rate-limit')
-const hpp = require('hpp')
-const cors = require('cors')
+// const mongoSanitize = require('express-mongo-sanitize')
+// const helmet = require('helmet')
+// const xss = require('xss-clean')
+// const rateLimit = require('express-rate-limit')
+// const hpp = require('hpp')
+// const cors = require('cors')
 
 const errorHandler = require('./middleware/error')
 
@@ -26,24 +26,24 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Sanitize data
-app.use(mongoSanitize())
+// app.use(mongoSanitize())
 
 // Set security headers
-app.use(helmet())
+// app.use(helmet())
 
 // Prevent XSS attacks
-app.use(xss())
+// app.use(xss())
 
 // Enable CORS
-app.use(cors())
+// app.use(cors())
 
 // Rate limiting
-const limiter = rateLimit({
-	windowMs: 10 * 60 * 1000, // 10 mins
-	max: 100, // 100 request per 10 mins
-})
+// const limiter = rateLimit({
+// 	windowMs: 10 * 60 * 1000, // 10 mins
+// 	max: 100, // 100 request per 10 mins
+// })
 
-app.use(limiter)
+// app.use(limiter)
 
 // Prevent http param pollution
 app.use(hpp())
