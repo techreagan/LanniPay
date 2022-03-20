@@ -6,7 +6,9 @@ const {
 
 const router = express.Router()
 
+const validateFee = require('./fees.middleware')
+
 router.post('/fees', createFeeConfigurationSpec)
-router.post('/compute-transaction-fee', feeComputation)
+router.post('/compute-transaction-fee', validateFee, feeComputation)
 
 module.exports = router
