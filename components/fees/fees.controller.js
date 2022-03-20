@@ -60,7 +60,11 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 
 	let feeLocale = CurrencyCountry === PaymentEntity.Country ? 'LOCL' : 'INTL'
 
-	const fees = await Fee.find()
+	const fees = await Fee.find().lean()
+
+	// console.log(fees)
+
+	// conso
 
 	const approximateFee = fees.filter(
 		(fee) =>
@@ -80,7 +84,7 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 
 	for (let fee of approximateFee) {
 		// approximateFee.forEach((fee) => {
-		const data = Object.values(fee._doc)
+		const data = Object.values(fee)
 		const occurrence = data.reduce((a, v) => (v === '*' ? a + 1 : a), 0)
 
 		if (occurrence <= num) {
