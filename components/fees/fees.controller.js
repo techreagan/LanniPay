@@ -62,7 +62,7 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 
 	let feeLocale = CurrencyCountry === PaymentEntity.Country ? 'LOCL' : 'INTL'
 
-	const fees = await Fee.findOne().lean()
+	const fees = await Fee.findOne()
 
 	// conso
 
