@@ -18,7 +18,7 @@ const FeeSchema = new Schema(
 		},
 		feeLocale: {
 			type: String,
-			required: [true, 'Please add a FeeLocale'],
+			required: [true, 'Please add a fee locale'],
 			enum: {
 				values: ['LOCL', 'INTL', '*'],
 				message: '{VALUE} is not a valid fee locale',
@@ -41,11 +41,11 @@ const FeeSchema = new Schema(
 		},
 		entityProperty: {
 			type: String,
-			required: true,
+			required: [true, 'Please add a entity property'],
 		},
 		feeType: {
 			type: String,
-			required: true,
+			required: [true, 'Please add a fee type'],
 			enum: {
 				values: ['FLAT', 'PERC', 'FLAT_PERC'],
 				message: '{VALUE} is not a valid Fee Type',
@@ -54,17 +54,19 @@ const FeeSchema = new Schema(
 		feeValue: {
 			type: String,
 			required: true,
+			validate: {
+				validator: function (v) {
+					// console.log(this.feeType)
+					return this.feeType === 'FLAT_PERC'
+						? /\d+:\d+/.test(v)
+						: /\d+/.test(v)
+				},
+				message: (props) => {
+					console.log(props)
+					return `${props.value} is not the valid format, check fee type`
+				},
+			},
 		},
-		// email: {
-		// 	type: String,
-		// 	required: [true, 'Please add an email'],
-		// 	unique: true,
-		// 	uniqueCaseInsensitive: true,
-		// 	match: [
-		// 		/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-		// 		'Please add a valid email',
-		// 	],
-		// },
 	},
 	{
 		timestamps: true,
