@@ -19,7 +19,8 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
 }
 
-require('./routes')(app)
+const feesRoutes = require('./components/fees/fees.routes')
+app.use(feesRoutes)
 
 app.use(errorHandler)
 
