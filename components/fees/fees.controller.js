@@ -14,9 +14,11 @@ exports.createFeeConfigurationSpec = asyncHandler(async (req, res, next) => {
 	if (!FeeConfigurationSpec)
 		return next(new ErrorResponse(`Please add FeeConfigurationSpec`, 400))
 
-	await Fee.deleteMany({})
+	await Fee.deleteOne()
 
 	const breakConfigSpec = FeeConfigurationSpec.split('\n')
+
+	const fee = new Fee()
 
 	for (let spec of breakConfigSpec) {
 		const splitWithSpace = spec.split(' ')
@@ -26,7 +28,7 @@ exports.createFeeConfigurationSpec = asyncHandler(async (req, res, next) => {
 		const feeEntity = splitWithSpace[3].split('(')[0]
 		const entityProperty = splitWithSpace[3].split('(')[1].replace(')', '')
 
-		await Fee.create({
+		fee.fees.push({
 			feeId: splitWithSpace[0],
 			feeCurrency: splitWithSpace[1],
 			feeLocale: splitWithSpace[2],
@@ -36,7 +38,7 @@ exports.createFeeConfigurationSpec = asyncHandler(async (req, res, next) => {
 			feeValue: splitWithSpace[7],
 		})
 	}
-
+	await fee.save()
 	res.status(200).json({ status: 'ok' })
 })
 
@@ -60,13 +62,11 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 
 	let feeLocale = CurrencyCountry === PaymentEntity.Country ? 'LOCL' : 'INTL'
 
-	const fees = await Fee.find().lean(true).exec()
-
-	console.log(fees)
+	const fees = await Fee.findOne().lean(true).exec()
 
 	// conso
 
-	const approximateFee = fees.filter(
+	const approximateFee = fees.fees.filter(
 		(fee) =>
 			(fee.feeCurrency === Currency || fee.feeCurrency === '*') &&
 			(fee.feeLocale === feeLocale || fee.feeLocale === '*') &&
