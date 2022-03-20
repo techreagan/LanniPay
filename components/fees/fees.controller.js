@@ -78,7 +78,8 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 	let num = Number.POSITIVE_INFINITY
 	let validFee = {}
 
-	approximateFee.forEach((fee) => {
+	for (let fee of approximateFee) {
+		// approximateFee.forEach((fee) => {
 		const data = Object.values(fee._doc)
 		const occurrence = data.reduce((a, v) => (v === '*' ? a + 1 : a), 0)
 
@@ -86,7 +87,7 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 			validFee = fee
 		}
 		num = occurrence
-	})
+	}
 
 	if (approximateFee.length === 0)
 		return res
