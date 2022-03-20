@@ -88,7 +88,7 @@ exports.feeComputation = asyncHandler(async (req, res, next) => {
 		num = occurrence
 	})
 
-	if (approximateFeet.length === 0)
+	if (approximateFee.length === 0)
 		return res
 			.status(400)
 			.json({ Error: `No fee configuration for USD transactions` })
