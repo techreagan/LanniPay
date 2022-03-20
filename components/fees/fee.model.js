@@ -59,13 +59,11 @@ const FeeSchema = new Schema(
 						required: true,
 						validate: {
 							validator: function (v) {
-								// console.log(this.feeType)
 								return this.feeType === 'FLAT_PERC'
 									? /\d+:\d+/.test(v)
 									: /\d+/.test(v)
 							},
 							message: (props) => {
-								console.log(props)
 								return `${props.value} is not the valid format, check fee type`
 							},
 						},
